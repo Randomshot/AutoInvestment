@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script type="text/javascript">
+
+        $().ready(function(){
+           // 서버쪽은 크롬에서 const를 인식하지만 브라우저가 보는 파일들은 const나 let 사용
+           // 시 인식 불가
+            
+           var socket = io.connect();
+            var dataLog = "";
+
+            function receiveData(socketReceive,divId){
+                
+                socket.on(socketReceive, function (data) {
+                    //$("#log").append( $("<div>"+data+"</div>") );
+                    dataLog = "";
+                    $(divId).empty();
+               
+                    dataLog += '<div>';
+                    for(var i in data){
+                        dataLog += data[i];
+                        dataLog += ' <br> ';
+                    }
+                    dataLog += '</div>';
+                    $(divId).html(dataLog);
+                });
+            }
+            receiveData("receive1","#buyLog");
+            receiveData("receive2","#sellLog");
+            receiveData("coinReceive1","#coinBuyLog");
+            receiveData("coinReceive2","#coinSellLog");
+      
+
+        });
+    </script>
+</head>
+<body>
+  
+    <style>
+        
+        #buyLog,#coinBuyLog{
+        
+            float : left;
+            width : 33%;
+        }
+
+    </style>
+    <div id = "userName">LuterGS</div>
+    <br>
+    <div>stock</div>
+    <br>
+    <div id="log" >
+        <div id = "buyLog" ></div>
+        <div id = "sellLog" ></div>
+    </div>
+
+    <br>
+    <div>coin</div>
+    <br>
+
+
+    <div id = "coinLog">
+        <div id = "coinBuyLog"></div>
+        <div id = "coinSellLog"></div>
+    </div>
+</body>
+</html>
